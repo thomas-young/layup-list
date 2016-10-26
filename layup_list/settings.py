@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'web',
     'analytics',
     'recommendations',
+    'dal',
+    'dal_select2'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -72,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'web.context_processors.search_form',
             ],
         },
     },

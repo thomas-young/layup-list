@@ -17,11 +17,13 @@
         <form class="landing-search" action="{% url 'course_search' %}" method="get" role="search">
             <div class="form-group">
                 <div class="input-group">
-                    <input name="q" type="text" class="search-input form-control" placeholder="Search for Courses...">
-                    <span class="input-group-btn">
+                            {{ search_form }}
+                            {{ search_form.media }}
+                    <!-- <input name="q" type="text" class="search-input form-control" placeholder="Search for Courses..."> -->
+<!--                     <span class="input-group-btn">
                         <button type="submit" class="btn btn-default">Search</button>
                     </span>
-                </div>
+ -->                </div>
             </div>
         </form>
         <a href="{% url 'current_term' 'best' %}"><button type="button" class="btn btn-default">See Best Classes</button></a>

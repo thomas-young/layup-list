@@ -27,7 +27,7 @@ from web.models import (
     Student,
     Vote,
 )
-from web.models.forms import ReviewForm, SignupForm
+from web.models.forms import ReviewForm, SignupForm, SearchForm
 from lib.grades import numeric_value_for_grade
 from lib.terms import numeric_value_of_term
 from lib.departments import get_department_name
@@ -252,6 +252,9 @@ def departments(request):
 @require_safe
 def course_search(request):
     query = request.GET.get("q", "").strip()
+    if query.isdigit():
+        return redirect(course_detail, int(query))
+
     if len(query) < 3:
         return render(request, 'course_search.html', {
             'query': query,

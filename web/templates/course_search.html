@@ -25,6 +25,10 @@
     <h3>Query must be at least 3 characters long.</h3>
 {% elif not courses %}
     <h3>Could not find any results. Please double-check your search query, and make sure the department and course number are correct.</h3>
+
+                        <div class="input-group">
+    {{ simple_search_form }}
+    </div>
 {% else %}
     <table class="table table-hover">
         <thead>

@@ -20,6 +20,7 @@ import django.contrib.auth.views as authviews
 from web import views
 from analytics import views as aviews
 from recommendations import views as rviews
+from web.course_autocomplete import CourseAutocomplete
 
 urlpatterns = [
 
@@ -79,4 +80,8 @@ urlpatterns = [
         name="password_reset_confirm"),
     url(r'^accounts/password/done/$', authviews.password_reset_complete,
         {'template_name': 'password_reset_complete.html'}),
+
+    # autocomplete
+    url(r'^course-autocomplete/$', CourseAutocomplete.as_view(),
+        name='course-autocomplete')
 ]
