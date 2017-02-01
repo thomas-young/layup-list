@@ -1,8 +1,14 @@
+from collections import defaultdict
 import sys
-from django.shortcuts import render, redirect
+
 from django.conf import settings
-from django.views.decorators.http import require_safe, require_POST
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.urlresolvers import reverse
+from django.db import IntegrityError, transaction
+from django.db.models import Count
 from django.http import (
     HttpResponse,
     HttpResponseBadRequest,
@@ -11,13 +17,11 @@ from django.http import (
     HttpResponseRedirect,
     JsonResponse,
 )
-from django.core.urlresolvers import reverse
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.db import IntegrityError, transaction
-from django.db.models import Count
+from django.views.decorators.http import require_safe, require_POST
+
+
 from apps.recommendations.models import Recommendation
 from apps.web.models import (
     Course,
@@ -29,10 +33,11 @@ from apps.web.models import (
     Vote,
 )
 from apps.web.models.forms import ReviewForm, SignupForm
+
+from lib import constants
+from lib.departments import get_department_name
 from lib.grades import numeric_value_for_grade
 from lib.terms import numeric_value_of_term
-from lib.departments import get_department_name
-from lib import constants
 
 LIMITS = {
     "courses": 20,
@@ -316,11 +321,8 @@ def course_review_search(request, course_id):
 def medians(request, course_id):
 
     # retrieve course medians for term, and group by term for averaging
-    medians_by_term = {}
+    medians_by_term = defaultdict(list)
     for course_median in CourseMedian.objects.filter(course=course_id):
-        if course_median.term not in medians_by_term:
-            medians_by_term[course_median.term] = []
-
         medians_by_term[course_median.term].append({
             'median': course_median.median,
             'enrollment': course_median.enrollment,
@@ -338,7 +340,7 @@ def medians(request, course_id):
                 'courses': term_medians,
             } for term, term_medians in medians_by_term.iteritems()
         ],
-        key=lambda x: numeric_value_of_term(x['term']),
+        key=lambda x: -numeric_value_of_term(x['term']),
         reverse=True,
     )})
 
