@@ -68,6 +68,8 @@ target/
 node_modules
 **/node_modules
 
+# Excel files
+*.xlsx
 
 .DS_Store
 **/.DS_Store
