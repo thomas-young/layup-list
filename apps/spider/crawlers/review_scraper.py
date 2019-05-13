@@ -1,18 +1,20 @@
+"""
+In order to run the scraper please provide a file 'login.xlsx' in the same dir
+as the scraper. Structure must be as follows:
 
-#In order to run the scraper please provide a file 'login.xlsx' in the same dir as the scraper. Structure must be as follows:
+     Col 1    Col 2    Col 3
+Row 1 Username Password Auth
+Row 2 FILL     FILL     FILL
 
-#      Col 1    Col 2    Col 3
-#Row 1 Username Password Auth
-#Row 2 FILL     FILL     FILL
+You MUST reset your security questions so that all their answers are the same.
+Sorry about that, couldn't extract the security questions from the page as
+they're just images.
 
-#You MUST reset your security questions so that all their answers are the same. Sorry about that, couldn't extract the
-#security questions from the page as they're just images.
-
-#Dependencies:
-#Pandas
-#Selenium
-#chromedriver for selenium
-
+Dependencies:
+Pandas
+Selenium
+chromedriver for selenium
+"""
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -30,10 +32,11 @@ auth = login_dict['auth'][0]
 
 # start chrome driver and set download path
 chromeOptions = webdriver.ChromeOptions()
-prefs = {"download.default_directory" : "./instructor_xlxs"}
-chromeOptions.add_experimental_option("prefs",prefs)
+prefs = {"download.default_directory": "./instructor_xlxs"}
+chromeOptions.add_experimental_option("prefs", prefs)
 chromedriver = "./chromedriver"
-browser = webdriver.Chrome(executable_path=chromedriver, chrome_options=chromeOptions)
+browser = webdriver.Chrome(
+    executable_path=chromedriver, chrome_options=chromeOptions)
 
 #go to banner
 browser.get('https://www.dartmouth.edu/bannerstudent/')
@@ -63,8 +66,10 @@ portal.click()
 # get table of classes
 instructor_names = []
 browser.switch_to_window(browser.window_handles[1])
-tbody = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'tbody')))
-rows = WebDriverWait(tbody, 10).until(EC.presence_of_all_elements_located((By.TAG_NAME, 'tr')))
+tbody = WebDriverWait(browser, 10).until(
+    EC.presence_of_element_located((By.TAG_NAME, 'tbody')))
+rows = WebDriverWait(tbody, 10).until(
+    EC.presence_of_all_elements_located((By.TAG_NAME, 'tr')))
 
 # iterate over table
 for row in rows:
@@ -82,11 +87,18 @@ for row in rows:
         sleep(2)
 
         # save reviews
-        gear = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, 'uberBar_dashboardpageoptions')))
+        gear = WebDriverWait(browser, 10).until(
+            EC.presence_of_element_located((By.ID,
+                                            'uberBar_dashboardpageoptions')))
         gear.click()
-        export_excel = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.ID, 'idPageExportToExcel')))
+        export_excel = WebDriverWait(browser, 10).until(
+            EC.presence_of_element_located((By.ID, 'idPageExportToExcel')))
         export_excel.click()
-        export_dashboard = WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="idDashboardExportToExcelMenu"]/table/tbody/tr[1]/td[1]/a[2]')))
+        export_dashboard = WebDriverWait(browser, 10).until(
+            EC.element_to_be_clickable((
+                By.XPATH,
+                '//*[@id="idDashboardExportToExcelMenu"]/table/tbody/tr[1]/td[1]/a[2]'
+            )))
         export_dashboard.click()
         sleep(2)
 
