@@ -2,7 +2,6 @@ import os
 import dj_database_url
 import sys
 
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = os.environ['DEBUG'] == "True"
@@ -87,7 +86,7 @@ USE_TZ = True
 # Static files
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -96,9 +95,7 @@ STATICFILES_FINDERS = (
 )
 ROOT_ASSETS_DIR = os.path.join(BASE_DIR, 'root_assets')
 PIPELINE = {
-    'COMPILERS': (
-        'react.utils.pipeline.JSXCompiler',
-    ),
+    'COMPILERS': ('react.utils.pipeline.JSXCompiler', ),
     'JAVASCRIPT': {
         'app': {
             'source_filenames': (
@@ -111,7 +108,8 @@ PIPELINE = {
                 'js/web/course_detail.jsx',
                 'js/web/course_review_search.jsx',
             ),
-            'output_filename': 'js/app.js',
+            'output_filename':
+            'js/app.js',
         }
     },
     'STYLESHEETS': {
@@ -124,14 +122,14 @@ PIPELINE = {
                 'css/web/landing.css',
                 'css/web/auth.css',
             ),
-            'output_filename': 'css/app.css',
+            'output_filename':
+            'css/app.css',
             'extra_context': {
                 'media': 'screen,projection',
             },
         }
     }
 }
-
 
 # Email server
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
@@ -143,35 +141,35 @@ DEFAULT_FROM_EMAIL = 'support@layuplist.com'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.'
-                'UserAttributeSimilarityValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.'
+        'UserAttributeSimilarityValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.'
-                'MinimumLengthValidator',
+        'MinimumLengthValidator',
         'OPTIONS': {
             'min_length': 6,
         },
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.'
-                'CommonPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.'
+        'CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.'
-                'NumericPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.'
+        'NumericPasswordValidator',
     },
 ]
-
 
 if not DEBUG:
     SERVER_EMAIL = 'support@layuplist.com'
     ADMINS = [('Support', 'support@layuplist.com')]
 
-
 SESSION_COOKIE_AGE = 3153600000  # 100 years
 SESSION_COOKIE_SECURE = not DEBUG
-
 
 CELERY_BROKER_URL = os.environ["REDIS_URL"]
 CELERY_RESULT_BACKEND = 'django-db'

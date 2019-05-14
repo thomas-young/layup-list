@@ -1,11 +1,9 @@
-from __future__ import unicode_literals
 from django.db import models, transaction
 from django.contrib.auth.models import User
 from apps.web.models import Course
 
 
 class VoteManager(models.Manager):
-
     @transaction.atomic
     def vote(self, value, course_id, category, user):
         is_unvote = False
@@ -15,10 +13,7 @@ class VoteManager(models.Manager):
 
         course = Course.objects.get(id=course_id)
         vote, created = self.get_or_create(
-            course=course,
-            category=category,
-            user=user
-        )
+            course=course, category=category, user=user)
 
         # if previously voted, reverse the old value of the vote
         if not created:
@@ -55,8 +50,7 @@ class VoteManager(models.Manager):
         votes = self.filter(
             course_id__in=courses.values_list('id', flat=True),
             category=category,
-            user=user
-        )
+            user=user)
 
         votes_dict = {vote.course_id: vote for vote in votes}
 
@@ -104,12 +98,10 @@ class Vote(models.Model):
         unique_together = ("course", "user", "category")
 
     def __unicode__(self):
-        return "{} {} for {} by {}".format(
-            self.category.capitalize(),
-            self.vote_type(),
-            self.course.short_name(),
-            self.user.username
-        )
+        return "{} {} for {} by {}".format(self.category.capitalize(),
+                                           self.vote_type(),
+                                           self.course.short_name(),
+                                           self.user.username)
 
     def vote_type(self):
         if self.is_upvote():

@@ -42,10 +42,9 @@ def crawl_medians():
 def crawl_term_median_page(url):
     new_data = medians.crawl_term_medians_for_url(url)
     resource_name = "{term}_medians".format(
-        term=medians.get_term_from_median_page_url(url),
-    )
-    return CrawledData.objects.handle_new_crawled_data(
-        new_data, resource_name, CrawledData.MEDIANS)
+        term=medians.get_term_from_median_page_url(url), )
+    return CrawledData.objects.handle_new_crawled_data(new_data, resource_name,
+                                                       CrawledData.MEDIANS)
 
 
 @shared_task

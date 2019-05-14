@@ -21,12 +21,12 @@ class CourseTestCase(TestCase):
         self.assertEqual(len(Course.objects.for_term(self.TEST_TERM)), 0)
 
     def test_for_term_filters_by_distrib_correctly(self):
-        self.assertEqual(len(Course.objects.for_term(
-            self.TEST_TERM, self.distrib.name)), 0)
+        self.assertEqual(
+            len(Course.objects.for_term(self.TEST_TERM, self.distrib.name)), 0)
         self.c1.distribs.add(self.distrib)
         self.c1.save()
-        self.assertEqual(len(Course.objects.for_term(
-            self.TEST_TERM, self.distrib.name)), 1)
+        self.assertEqual(
+            len(Course.objects.for_term(self.TEST_TERM, self.distrib.name)), 1)
 
     def test_review_search_retrieves_review_by_comments(self):
         c1r = factories.ReviewFactory(
@@ -132,28 +132,28 @@ class CourseSearchTestCase(TestCase):
 
     def test_searches_by_number_and_subnumber(self):
         # e.g. COSC 089.01, COSC089.01
-        self.assertEqual(len(Course.objects.search(
-            "{}1.5".format(self.DEPARTMENT_4))), 0)
-        self.assertEqual(len(Course.objects.search(
-            "{} 1.5".format(self.DEPARTMENT_4))), 0)
+        self.assertEqual(
+            len(Course.objects.search("{}1.5".format(self.DEPARTMENT_4))), 0)
+        self.assertEqual(
+            len(Course.objects.search("{} 1.5".format(self.DEPARTMENT_4))), 0)
         self.c1.subnumber = 5
         self.c1.save()
-        self.assertEqual(len(Course.objects.search(
-            "{}1.5".format(self.DEPARTMENT_4))), 1)
-        self.assertEqual(len(Course.objects.search(
-            "{} 1.5".format(self.DEPARTMENT_4))), 1)
+        self.assertEqual(
+            len(Course.objects.search("{}1.5".format(self.DEPARTMENT_4))), 1)
+        self.assertEqual(
+            len(Course.objects.search("{} 1.5".format(self.DEPARTMENT_4))), 1)
 
     def test_searches_by_number_and_no_subnumber(self):
         # e.g. COSC 1
-        self.assertEqual(len(Course.objects.search(
-            "{}1".format(self.DEPARTMENT_4))), 1)
-        self.assertEqual(len(Course.objects.search(
-            "{} 1".format(self.DEPARTMENT_4))), 1)
+        self.assertEqual(
+            len(Course.objects.search("{}1".format(self.DEPARTMENT_4))), 1)
+        self.assertEqual(
+            len(Course.objects.search("{} 1".format(self.DEPARTMENT_4))), 1)
         self.c1.delete()
-        self.assertEqual(len(Course.objects.search(
-            "{}1".format(self.DEPARTMENT_4))), 0)
-        self.assertEqual(len(Course.objects.search(
-            "{} 1".format(self.DEPARTMENT_4))), 0)
+        self.assertEqual(
+            len(Course.objects.search("{}1".format(self.DEPARTMENT_4))), 0)
+        self.assertEqual(
+            len(Course.objects.search("{} 1".format(self.DEPARTMENT_4))), 0)
 
     def test_search_is_case_insensitive(self):
         self.c1.title = "The Art of War"

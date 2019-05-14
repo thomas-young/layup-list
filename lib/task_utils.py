@@ -16,13 +16,13 @@ def email_if_fails(fn):
         except:
             if not settings.DEBUG:
                 try:
-                    fnName = fn.func_name
+                    fnName = fn.__name__
                 except AttributeError:
                     fnName = fn.__name__
-                send_error_email(
-                    fnName, args, kwargs, socket.gethostname(),
-                    traceback.format_exc())
+                send_error_email(fnName, args, kwargs, socket.gethostname(),
+                                 traceback.format_exc())
             raise
+
     return decorated
 
 

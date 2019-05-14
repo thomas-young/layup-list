@@ -13,7 +13,6 @@ from lib import constants
 
 
 class CrawledDataManager(models.Manager):
-
     def handle_new_crawled_data(self, new_data, resource_name, data_type):
         db_data, created = self.update_or_create(
             resource=resource_name,
@@ -29,10 +28,8 @@ class CrawledDataManager(models.Manager):
 
     def sorted(self):
         qs = self.order_by("-updated_at").all()
-        return (
-            [d for d in qs if d.has_change()] +
-            [d for d in qs if not d.has_change()]
-        )
+        return ([d for d in qs if d.has_change()] +
+                [d for d in qs if not d.has_change()])
 
 
 class CrawledData(models.Model):
@@ -68,10 +65,11 @@ class CrawledData(models.Model):
         if not self.current_data:
             return utils.pretty_json(self.pending_data)
         if self.has_change:
-            return "\n".join(difflib.unified_diff(
-                utils.pretty_json(self.current_data).splitlines(),
-                utils.pretty_json(self.pending_data).splitlines(),
-            ))
+            return "\n".join(
+                difflib.unified_diff(
+                    utils.pretty_json(self.current_data).splitlines(),
+                    utils.pretty_json(self.pending_data).splitlines(),
+                ))
 
     @property
     def pretty_current_data(self):

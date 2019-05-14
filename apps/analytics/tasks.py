@@ -40,8 +40,8 @@ def _get_analytics_email_context(lookback):
         'users': {
             'all': users,
             'new': users.filter(date_joined__gte=changes_since),
-            'unique_recent_logins': users.filter(
-                last_login__gte=changes_since),
+            'unique_recent_logins':
+            users.filter(last_login__gte=changes_since),
         },
         'votes': {
             'all_quality_upvotes': quality_upvotes,

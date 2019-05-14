@@ -50,9 +50,11 @@ urlpatterns = [
     url(r'^(?P<sort>best|layups)/?', views.current_term, name="current_term"),
     url(r'^search/?', views.course_search, name="course_search"),
     url(r'^course/(?P<course_id>[0-9]+)$',
-        views.course_detail, name="course_detail"),
+        views.course_detail,
+        name="course_detail"),
     url(r'^course/(?P<course_id>[0-9]+)/review_search/?',
-        views.course_review_search, name="course_review_search"),
+        views.course_review_search,
+        name="course_review_search"),
     url(r'^departments/?', views.departments, name="departments"),
 
     # recommendations
@@ -60,9 +62,11 @@ urlpatterns = [
 
     # api
     url(r'^api/course/(?P<course_id>[0-9].*)/medians',
-        views.medians, name="medians"),
+        views.medians,
+        name="medians"),
     url(r'^api/course/(?P<course_id>[0-9].*)/professors?/?',
-        views.course_professors, name="course_professors"),
+        views.course_professors,
+        name="course_professors"),
     url(r'^api/course/(?P<course_id>[0-9].*)/vote', views.vote, name="vote"),
 
     # authentication
@@ -72,8 +76,8 @@ urlpatterns = [
     url(r'^accounts/confirmation$', views.confirmation, name="confirmation"),
 
     # password resets
-    url(r'^accounts/password/reset/$', authviews.password_reset,
-        {
+    url(r'^accounts/password/reset/$',
+        authviews.password_reset, {
             'post_reset_redirect': '/accounts/password/reset/done/',
             'template_name': 'password_reset_form.html',
             'html_email_template_name': 'password_reset_email.html',
@@ -83,8 +87,7 @@ urlpatterns = [
     url(r'^accounts/password/reset/done/$', authviews.password_reset_done,
         {'template_name': 'password_reset_done.html'}),
     url(r'^accounts/password/reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
-        authviews.password_reset_confirm,
-        {
+        authviews.password_reset_confirm, {
             'post_reset_redirect': '/accounts/password/done/',
             'template_name': 'password_reset_confirm.html'
         },
