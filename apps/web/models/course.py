@@ -1,7 +1,6 @@
-from __future__ import unicode_literals
 from django.db import models
 from django.db.models import Q
-from course_offering import CourseOffering
+from .course_offering import CourseOffering
 from django.core.urlresolvers import reverse
 from lib.constants import CURRENT_TERM
 from lib.terms import numeric_value_of_term
@@ -24,8 +23,8 @@ class CourseManager(models.Manager):
     def search(self, query):
         query_data = {
             k: v.strip()
-            for k, v in self.course_search_regex.match(
-                query).groupdict().iteritems()
+            for k, v in list(
+                self.course_search_regex.match(query).groupdict().items())
         }
 
         department_or_query = query_data["department_or_query"]
@@ -45,21 +44,18 @@ class CourseManager(models.Manager):
             return Course.objects.filter(
                 department__iexact=department_or_query,
                 number=number,
-                subnumber=subnumber
-            )
+                subnumber=subnumber)
         elif number:
             # course with number, could be ambiguous
             # e.g. COSC 001
             return Course.objects.filter(
-                department__iexact=department_or_query,
-                number=number
-            )
+                department__iexact=department_or_query, number=number)
         else:
             # could be either department or query
             # e.g. "COSC" (department) or "War" (query)
             courses = Course.objects.filter(
-                department__iexact=department_or_query,
-            ).order_by("number", "subnumber")
+                department__iexact=department_or_query, ).order_by(
+                    "number", "subnumber")
             if len(courses) == 0:
                 return Course.objects.filter(
                     title__icontains=department_or_query)
@@ -105,8 +101,8 @@ class Course(models.Model):
 
     def short_name(self):
         if self.subnumber:
-            return "{0}{1:03d}.{2:02d}".format(
-                self.department, self.number, self.subnumber)
+            return "{0}{1:03d}.{2:02d}".format(self.department, self.number,
+                                               self.subnumber)
         else:
             return "{0}{1:03d}".format(self.department, self.number)
 
@@ -167,8 +163,7 @@ class Course(models.Model):
 
     def search_reviews(self, query):
         return self.review_set.order_by("-term").filter(
-            Q(comments__icontains=query) | Q(professor__icontains=query)
-        )
+            Q(comments__icontains=query) | Q(professor__icontains=query))
 
     def should_ask_viewers_to_contribute(self):
         return self.department in {"COSC", "ENGS"}

@@ -18,9 +18,7 @@ class SignupForm(forms.Form):
     }
 
     email = forms.EmailField(label="Dartmouth Undergraduate Email")
-    password1 = forms.CharField(
-        label="Password",
-        widget=forms.PasswordInput)
+    password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(
         label="Password confirmation",
         widget=forms.PasswordInput,
@@ -66,13 +64,11 @@ class SignupForm(forms.Form):
             username=self.cleaned_data["email"].split("@")[0],
             email=self.cleaned_data["email"],
             password=self.cleaned_data["password1"],
-            is_active=False
-        )
+            is_active=False)
 
         new_student = Student.objects.create(
             user=new_user,
-            confirmation_link=User.objects.make_random_password(length=16)
-        )
+            confirmation_link=User.objects.make_random_password(length=16))
         new_student.send_confirmation_link(request)
 
         return new_user

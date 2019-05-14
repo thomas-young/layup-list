@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -10,18 +9,15 @@ from lib import constants
 
 
 class StudentManager(models.Manager):
-
     def is_valid_dartmouth_student_email(self, email):
         email_components = email.split("@")
         if len(email_components) != 2:
             return False
         username, domain = email_components
         year = username.split(".")[-1]
-        return (
-            domain == "dartmouth.edu" and
-            len(year) == 2 and
-            (year.isdigit() or year.lower() == "ug" or year.lower() == "gr")
-        )
+        return (domain == "dartmouth.edu" and len(year) == 2
+                and (year.isdigit() or year.lower() == "ug"
+                     or year.lower() == "gr"))
 
 
 class Student(models.Model):
@@ -41,9 +37,9 @@ class Student(models.Model):
             send_mail(
                 'Your confirmation link',
                 'Please navigate to the following confirmation link: ' +
-                full_link, constants.SUPPORT_EMAIL,
-                [self.user.email], fail_silently=False
-            )
+                full_link,
+                constants.SUPPORT_EMAIL, [self.user.email],
+                fail_silently=False)
 
     def can_see_recommendations(self):
         return (Vote.objects.num_quality_upvotes_for_user(self.user) >=
